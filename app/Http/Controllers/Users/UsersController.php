@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\Users;
+namespace App\Http\Controllers\Users;
 
 use App\Entities\User;
 use Illuminate\Http\Request;
-use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;
 use App\Transformers\Users\UserTransformer;
+use App\Http\Resources\User as UserResource;
 
 /**
  * Class UsersController.
@@ -15,7 +15,6 @@ use App\Transformers\Users\UserTransformer;
  */
 class UsersController extends Controller
 {
-    use Helpers;
 
     /**
      * @var User
@@ -50,7 +49,7 @@ class UsersController extends Controller
             $paginator->appends('limit', $request->get('limit'));
         }
 
-        return $this->response->paginator($paginator, new UserTransformer());
+        return UserResource::collection($paginator);
     }
 
     /**

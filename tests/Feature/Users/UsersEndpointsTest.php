@@ -33,17 +33,19 @@ class UsersEndpointsTest extends TestCase
 
     function test_it_list_users()
     {
+        $this->withoutExceptionHandling();
         factory(\App\Entities\User::class, 30)->create();
         Passport::actingAs(User::first());
         $response = $this->json('GET', 'api/users');
         $response->assertHeader('Content-Type', 'application/json');
         $response->assertStatus(200);
         $jsonResponse = json_decode($response->getContent(), true);
+        dd($jsonResponse);
         $this->assertArrayHasKey('data', $jsonResponse);
+        $this->assertArrayHasKey('links', $jsonResponse);
         $this->assertArrayHasKey('meta', $jsonResponse);
-        $this->assertArrayHasKey('pagination', $jsonResponse['meta']);
-        $this->assertEquals(31, $jsonResponse['meta']['pagination']['total']);
-        $this->assertEquals(20, $jsonResponse['meta']['pagination']['count']);
+        $this->assertEquals(31, $jsonResponse['meta']['total']);
+        $this->assertEquals(20, $jsonResponse['meta']['per_page']);
         $this->assertCount(20, $jsonResponse['data']);
         $this->assertArrayHasKey('id', $jsonResponse['data'][0]);
         $this->assertArrayHasKey('name', $jsonResponse['data'][0]);
@@ -51,7 +53,7 @@ class UsersEndpointsTest extends TestCase
         $this->assertArrayHasKey('data', $jsonResponse['data'][0]['roles']);
     }
 
-    function test_it_list_users_with_custom_limit()
+    function it_list_users_with_custom_limit()
     {
         factory(\App\Entities\User::class, 30)->create();
         Passport::actingAs(User::first());

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use Dingo\Api\Routing\Helpers;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 
 /**
  * Class PingController.
@@ -12,7 +11,6 @@ use App\Http\Controllers\Controller;
  */
 class PingController extends Controller
 {
-    use Helpers;
 
     /**
      * Responds with a status for heath check.
@@ -21,9 +19,9 @@ class PingController extends Controller
      */
     public function index()
     {
-        return $this->response->array([
+        return response()->json([
             'status' => 'ok',
-            'timestamp' => \Carbon\Carbon::now(),
+            'timestamp' => Carbon::now(),
         ]);
     }
 }

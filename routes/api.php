@@ -1,6 +1,6 @@
 <?php
 
-$api = app('Dingo\Api\Routing\Router');
+/**$api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function($api){
 
@@ -45,6 +45,20 @@ $api->version('v1', function($api){
 
     });
 
+});**/
+
+Route::resource('/', PingController::class)->only('index');
+
+Route::group(['middleware' => ['auth:api'], ], function () {
+
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/', 'Users\UsersController@index');
+        //$api->post('/', 'Api\Users\UsersController@store');
+        //$api->get('/{uuid}', 'Api\Users\UsersController@show');
+        //$api->put('/{uuid}', 'Api\Users\UsersController@update');
+        //$api->patch('/{uuid}', 'Api\Users\UsersController@update');
+        //$api->delete('/{uuid}', 'Api\Users\UsersController@destroy');
+    });
 });
 
 

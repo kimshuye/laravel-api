@@ -19,8 +19,17 @@ class PingTest extends TestCase
      */
     public function test_it_returns_ping()
     {
-        $response = $this->json('GET', 'api/ping');
+        $response = $this->json('GET', 'api');
         $response->assertStatus(200);
         $response->assertJson(['status' => 'ok']);
+    }
+
+    /**
+     *
+     */
+    public function test_it_does_not_allow_post_on_ping()
+    {
+        $response = $this->json('POST', 'api');
+        $response->assertStatus(405);
     }
 }
